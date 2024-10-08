@@ -1,0 +1,32 @@
+services:
+    test:
+        image: 'kartoza/postgis:14-3.2'
+        container_name: dev.db
+        ports:
+            - 15430:5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASS=click123
+            - POSTGRES_DB=dev
+            - EXTRA_CONF=log_statement='all'
+        volumes:
+            - 'new:/var/lib/postgresql'
+    test2:
+        image: 'kartoza/postgis:14-3.2'
+        container_name: test.db
+        ports:
+            - 15434:5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASS=click123
+            - POSTGRES_DB=test
+            - EXTRA_CONF=log_statement='all'
+        volumes:
+            - 'test:/var/lib/postgresql'
+         
+            
+volumes:
+    new:
+        external: true
+    test:
+        external: true    
