@@ -16,17 +16,10 @@ export class JwtStrategy extends PassportStrategy(
         });
     }
 
-    // async validate(payload: {
-    //     sub: number;
-    //     email: string;
-    // }){
-    //     console.log("here")
-    //    const user = await this.prisma.user.findUnique({
-    //     where: {
-    //         id: payload.sub,
-    //     },
-    //    });
-    //    delete user.hash;
-    //     return user;
-    // }
+    async validate(payload: {
+        sub: number;
+        email: string;
+    }){
+        return payload;
+    }
 }

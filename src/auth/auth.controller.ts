@@ -4,7 +4,8 @@ import { AuthDto } from "./dto";
 import { GetUser } from "./decorator";
 import { User } from "@prisma/client";
 import { AuthGuard } from "@nestjs/passport";
-import { JwtGuard } from "./guard";
+import { JwtGuard, RtGuard } from "./guard";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller('auth')
 export class AuthSController {
@@ -21,12 +22,14 @@ export class AuthSController {
         return this.authService.signup(dto);
     }
 
-    @UseGuards(AuthGuard('jwt-refresh '))
+    @ApiBearerAuth()
+    @UseGuards(RtGuard)
     @Post('/refresh')
-    refreshTokens() {
-        return this.authService.refreshTokens();
+    refreshTokens(@GetUser() user: User) {
+        return this.authService.refreshTokens(user);
     }
 
+    @ApiBearerAuth()
     @UseGuards(JwtGuard)
     @Post('/logout')
     logout(@GetUser() user: User) {

@@ -13,7 +13,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     constructor(config: ConfigService, private prisma: PrismaService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: config.get('JWT_SECRET'),
+            secretOrKey: config.get('JWT_REFRESH_SECRET'),
             passReqToCallback: true,
         });
     }
@@ -24,14 +24,8 @@ export class JwtRefreshStrategy extends PassportStrategy(
             email: string;
         }) {
         const refreshToken = req.get('authorization').replace('Bearer','').trim();
-        const user = await this.prisma.user.findUnique({
-            where: {
-                id: payload.sub,
-            },
-        });
-        delete user.hash;
         return {
-            user, refreshToken
+            ...payload, refreshToken
         };
     }
 }
