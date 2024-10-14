@@ -1,14 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Headers, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
-import { GetUser } from "./decorator";
+import { Authorized, GetUser } from "./decorator";
 import { User } from "@prisma/client";
-import { AuthGuard } from "@nestjs/passport";
-import { JwtGuard, RtGuard } from "./guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags } from "@nestjs/swagger";
 
-@Controller('auth')
-export class AuthSController {
+@Controller({ path: 'auth' })
+@ApiTags("Authorization")
+export class AuthController {
     constructor(private authService: AuthService) { }
 
     @HttpCode(HttpStatus.OK)
@@ -22,18 +21,17 @@ export class AuthSController {
         return this.authService.signup(dto);
     }
 
-    @ApiBearerAuth()
-    @UseGuards(RtGuard)
-    @Post('/refresh')
-    refreshTokens(@GetUser() user: User) {
-        return this.authService.refreshTokens(user);
-    }
+    // @ApiBearerAuth()
+    // @UseGuards(RtGuard)
+    // @Post('/refresh')
+    // refreshTokens(@GetUser() user: User) {
+    //     return this.authService.refreshTokens(user);
+    // }
 
-    @ApiBearerAuth()
-    @UseGuards(JwtGuard)
+    @Authorized()
     @Post('/logout')
-    logout(@GetUser() user: User) {
-        return this.authService.logout(user);
+    logout(@GetUser() user: User, @Headers() headers) {
+        return this.authService.logout(user, headers);
     }
 
 }

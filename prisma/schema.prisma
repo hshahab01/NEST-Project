@@ -13,28 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
+model User {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String?
-  email String @unique
+  name  String?
+  email String  @unique
 
-  hash String
+  hash     String
   hashedRt String?
 
   Contacts Contact[]
 }
 
-model Contact{
-  id Int @id @default(autoincrement())
+model Contact {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String
+  name   String
   number Int
 
   userId Int
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

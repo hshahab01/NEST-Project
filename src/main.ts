@@ -9,11 +9,14 @@ async function bootstrap() {
     whitelist: true,
   }))
   const config = new DocumentBuilder()
-    .setTitle('Library')
-    .setDescription('Place that has books')
+    .setTitle('Phonebook')
+    .addSecurity('authorization', {
+      type: 'apiKey',
+      description: 'API Authorization',
+      name: 'authorization',
+      in: 'header',
+  })
     .setVersion('1.0')
-    .addTag('books')
-    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

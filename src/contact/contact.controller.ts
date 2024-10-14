@@ -1,19 +1,18 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../auth/guard';
 import { ContactService } from './contact.service';
-import { GetUser } from '../auth/decorator';
+import { Authorized, GetUser } from '../auth/decorator';
 import { User } from '@prisma/client';
 import { CreateContactDto, EditContactDto } from './dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-@UseGuards(JwtGuard)
-@ApiBearerAuth()
-@Controller('contacts')
+@Controller({ path: 'contacts' })
+@ApiTags("Contacts")
 export class ContactController {
     constructor(
         private ContactService: ContactService,
     ){}
 
+    @Authorized()
     @Post()
     createContact(
         @GetUser() user: User,
@@ -25,11 +24,13 @@ export class ContactController {
         );
     }
 
+    @Authorized()
     @Get()
     getContacts(@GetUser() user: User){
         return this.ContactService.getContacts(user);
     }
 
+    @Authorized()
     @Get(':id')
     getContactById(
         @GetUser() user: User,
@@ -41,9 +42,10 @@ export class ContactController {
         );
     }
 
+    @Authorized()
     @Patch(':id')
     editContactById(
-        @GetUser('id') user: User,
+        @GetUser() user: User,
         @Body() dto: EditContactDto,
         @Param('id', ParseIntPipe) contactId: number,
     ){
@@ -54,9 +56,10 @@ export class ContactController {
         );
     }
 
+    @Authorized()
     @Delete(':id')
     deleteContact(
-        @GetUser('id') user: User,
+        @GetUser() user: User,
         @Param('id', ParseIntPipe) contactId: number
     ){
         return this.ContactService.deleteContact(

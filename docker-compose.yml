@@ -23,10 +23,20 @@ services:
             - EXTRA_CONF=log_statement='all'
         volumes:
             - 'test:/var/lib/postgresql'
-         
-            
+    redis:
+        container_name: base_setup.redis
+        image: 'bitnami/redis:6.0.16'
+        ports:
+            - 6379:6379
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        volumes:
+            - 'base_setup_redis_data:/bitnami'
+
 volumes:
     new:
         external: true
     test:
-        external: true    
+        external: true
+    base_setup_redis_data:
+        external: true

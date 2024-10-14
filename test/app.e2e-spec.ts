@@ -98,7 +98,8 @@ describe('App e2e', () => {
           .post('/auth/login')
           .withBody(dto)
           .expectStatus(200)
-          .stores('token', 'access_token');
+          .inspect()
+          .stores('token', '');
       });
     });
   });
@@ -109,7 +110,7 @@ describe('App e2e', () => {
           .spec()
           .get('/users/me')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .expectStatus(200);
       });
@@ -124,7 +125,7 @@ describe('App e2e', () => {
           .spec()
           .patch('/users')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .withBody(dto)
           .expectStatus(200)
@@ -142,7 +143,7 @@ describe('App e2e', () => {
           .spec()
           .get('/contacts')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .expectStatus(200)
           .expectBody([])
@@ -158,7 +159,7 @@ describe('App e2e', () => {
           .spec()
           .post('/contacts')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .withBody(dto)
           .expectStatus(201)
@@ -171,7 +172,7 @@ describe('App e2e', () => {
           .spec()
           .get('/contacts')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .expectStatus(200)
           .inspect()
@@ -183,7 +184,7 @@ describe('App e2e', () => {
           .spec()
           .get('/contacts/{id}')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .withPathParams('id', '$S{contactId}')
           .expectStatus(200)
@@ -199,7 +200,7 @@ describe('App e2e', () => {
           .spec()
           .patch('/contacts/{id}')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .withBody(dto)
           .withPathParams('id', '$S{contactId}')
@@ -213,7 +214,7 @@ describe('App e2e', () => {
           .spec()
           .delete('/contacts/{id}')
           .withHeaders({
-            Authorization: 'Bearer $S{token}',
+            Authorization: '$S{token}',
           })
           .withPathParams('id', '$S{contactId}')
           .expectStatus(200)
@@ -225,7 +226,7 @@ describe('App e2e', () => {
         .spec()
         .get('/contacts')
         .withHeaders({
-          Authorization: 'Bearer $S{token}',
+          Authorization: '$S{token}',
         })
         .expectStatus(200)
         .expectJsonLength(0);
@@ -238,7 +239,7 @@ describe('App e2e', () => {
         .spec()
         .delete('/users')
         .withHeaders({
-          Authorization: 'Bearer $S{token}',
+          Authorization: '$S{token}',
         })
         .expectStatus(200)
         .inspect()

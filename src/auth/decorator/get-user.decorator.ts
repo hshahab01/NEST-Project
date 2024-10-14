@@ -1,6 +1,7 @@
 import {
   createParamDecorator,
   ExecutionContext,
+  Headers,
 } from '@nestjs/common';
 
 export const GetUser = createParamDecorator(

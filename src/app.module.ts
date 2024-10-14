@@ -4,6 +4,10 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { ContactModule } from './contact/contact.module';
+import { RedisModule } from './redis/redis.module';
+import { SessionModule } from './session/session.module';
+import AuthGuard from './auth/guard/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -13,6 +17,12 @@ import { ContactModule } from './contact/contact.module';
     }),
     UserModule,
     ContactModule,
-    PrismaModule],
+    PrismaModule,
+    RedisModule,
+    SessionModule,
+    ],
+    providers: [
+      { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule {}
